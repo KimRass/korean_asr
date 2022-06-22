@@ -1,3 +1,8 @@
+.DS_Store
+*.pyc*
+__pycache__/
+.ipynb_checkpoints/
+.config.json
 experiment/
 experiment/*
 data/sample
@@ -13,4 +18,3 @@ __pycache__/
 venv/*
 *.pyc
 .idea
-.ipynb_checkpoints

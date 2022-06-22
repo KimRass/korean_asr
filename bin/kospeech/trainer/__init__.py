@@ -44,17 +44,17 @@ class TrainConfig:
     resume: bool = False
 
 
-@dataclass
-class ListenAttendSpellTrainConfig(TrainConfig):
-    optimizer: str = "adam"
-    init_lr: float = 1e-06
-    final_lr: float = 1e-06
-    peak_lr: float = 1e-04
-    warmup_steps: int = 400
-    num_epochs: int = 20
-    reduction: str = "mean"
-    label_smoothing: float = 0.1
-    lr_scheduler: str = 'tri_stage_lr_scheduler'
+# @dataclass
+# class ListenAttendSpellTrainConfig(TrainConfig):
+#     optimizer: str = "adam"
+#     init_lr: float = 1e-06
+#     final_lr: float = 1e-06
+#     peak_lr: float = 1e-04
+#     warmup_steps: int = 400
+#     num_epochs: int = 20
+#     reduction: str = "mean"
+#     label_smoothing: float = 0.1
+#     lr_scheduler: str = 'tri_stage_lr_scheduler'
 
 
 @dataclass
@@ -69,73 +69,72 @@ class DeepSpeech2TrainConfig(TrainConfig):
     lr_scheduler: str = 'tri_stage_lr_scheduler'
 
 
-@dataclass
-class RNNTTrainConfig(TrainConfig):
-    optimizer: str = "adam"
-    init_lr: float = 1e-06
-    final_lr: float = 1e-06
-    peak_lr: float = 1e-04
-    warmup_steps: int = 400
-    num_epochs: int = 20
-    reduction: str = "mean"
-    label_smoothing: float = 0.1
-    lr_scheduler: str = 'tri_stage_lr_scheduler'
+# @dataclass
+# class RNNTTrainConfig(TrainConfig):
+#     optimizer: str = "adam"
+#     init_lr: float = 1e-06
+#     final_lr: float = 1e-06
+#     peak_lr: float = 1e-04
+#     warmup_steps: int = 400
+#     num_epochs: int = 20
+#     reduction: str = "mean"
+#     label_smoothing: float = 0.1
+#     lr_scheduler: str = 'tri_stage_lr_scheduler'
 
 
-@dataclass
-class TransformerTrainConfig(TrainConfig):
-    optimizer: str = "adam"
-    init_lr: float = 1e-06
-    final_lr: float = 1e-06
-    peak_lr: float = 1e-04
-    warmup_steps: int = 4000
-    decay_steps: int = 80000
-    num_epochs: int = 40
-    reduction: str = "mean"
-    label_smoothing: float = 0.0
-    lr_scheduler: str = 'transformer_lr_scheduler'
+# @dataclass
+# class TransformerTrainConfig(TrainConfig):
+#     optimizer: str = "adam"
+#     init_lr: float = 1e-06
+#     final_lr: float = 1e-06
+#     peak_lr: float = 1e-04
+#     warmup_steps: int = 4000
+#     decay_steps: int = 80000
+#     num_epochs: int = 40
+#     reduction: str = "mean"
+#     label_smoothing: float = 0.0
+#     lr_scheduler: str = 'transformer_lr_scheduler'
 
 
-@dataclass
-class JasperTrainConfig(TrainConfig):
-    optimizer: str = "novograd"
-    reduction: str = "sum"
-    init_lr: float = 1e-3
-    final_lr: float = 1e-4
-    peak_lr: float = 1e-3
-    weight_decay: float = 1e-3
-    warmup_steps: int = 0
-    num_epochs: int = 10
-    lr_scheduler: str = 'tri_stage_lr_scheduler'
+# @dataclass
+# class JasperTrainConfig(TrainConfig):
+#     optimizer: str = "novograd"
+#     reduction: str = "sum"
+#     init_lr: float = 1e-3
+#     final_lr: float = 1e-4
+#     peak_lr: float = 1e-3
+#     weight_decay: float = 1e-3
+#     warmup_steps: int = 0
+#     num_epochs: int = 10
+#     lr_scheduler: str = 'tri_stage_lr_scheduler'
 
 
-@dataclass
-class ConformerTrainConfig(TrainConfig):
-    optimizer: str = "adam"
-    reduction: str = "mean"
-    lr_scheduler: str = 'transformer_lr_scheduler'
-    optimizer_betas: tuple = (0.9, 0.98)
-    optimizer_eps: float = 1e-09
-    warmup_steps: int = 10000
-    decay_steps: int = 80000
-    weight_decay: float = 1e-06
-    peak_lr: float = 0.05 / math.sqrt(512)
-    final_lr: float = 1e-07
-    final_lr_scale = 0.001
-    num_epochs: int = 20
+# @dataclass
+# class ConformerTrainConfig(TrainConfig):
+#     optimizer: str = "adam"
+#     reduction: str = "mean"
+#     lr_scheduler: str = 'transformer_lr_scheduler'
+#     optimizer_betas: tuple = (0.9, 0.98)
+#     optimizer_eps: float = 1e-09
+#     warmup_steps: int = 10000
+#     decay_steps: int = 80000
+#     weight_decay: float = 1e-06
+#     peak_lr: float = 0.05 / math.sqrt(512)
+#     final_lr: float = 1e-07
+#     final_lr_scale = 0.001
+#     num_epochs: int = 20
 
 
-@dataclass
-class ConformerSmallTrainConfig(ConformerTrainConfig):
-    peak_lr: float = 1e-04
+# @dataclass
+# class ConformerSmallTrainConfig(ConformerTrainConfig):
+#     peak_lr: float = 1e-04
 
 
-@dataclass
-class ConformerMediumTrainConfig(ConformerTrainConfig):
-    peak_lr: float = 1e-04
+# @dataclass
+# class ConformerMediumTrainConfig(ConformerTrainConfig):
+#     peak_lr: float = 1e-04
 
 
-@dataclass
-class ConformerLargeTrainConfig(ConformerTrainConfig):
-        peak_lr: float = 1e-04
-
+# @dataclass
+# class ConformerLargeTrainConfig(ConformerTrainConfig):
+#         peak_lr: float = 1e-04

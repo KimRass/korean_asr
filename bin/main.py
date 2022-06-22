@@ -17,9 +17,9 @@ import random
 import warnings
 import torch
 import torch.nn as nn
-import hydra
-from hydra.core.config_store import ConfigStore
-from omegaconf import OmegaConf, DictConfig
+# import hydra
+# from hydra.core.config_store import ConfigStore
+# from omegaconf import OmegaConf, DictConfig
 
 from kospeech.data.data_loader import split_dataset
 from kospeech.optim import Optimizer
@@ -32,8 +32,7 @@ from kospeech.utils import (
     get_lr_scheduler,
 )
 from kospeech.vocabs import (
-    KsponSpeechVocabulary,
-    LibriSpeechVocabulary,
+    KsponSpeechVocabulary
 )
 from kospeech.data.audio import (
     FilterBankConfig,
@@ -41,30 +40,12 @@ from kospeech.data.audio import (
     MfccConfig,
     SpectrogramConfig,
 )
-from kospeech.models import (
-    DeepSpeech2Config,
-    JointCTCAttentionLASConfig,
-    ListenAttendSpellConfig,
-    TransformerConfig,
-    JointCTCAttentionTransformerConfig,
-    JasperConfig,
-    ConformerSmallConfig,
-    ConformerMediumConfig,
-    ConformerLargeConfig,
-    RNNTransducerConfig,
-)
-from kospeech.trainer import (
-    SupervisedTrainer,
-    DeepSpeech2TrainConfig,
-    ListenAttendSpellTrainConfig,
-    TransformerTrainConfig,
-    JasperTrainConfig,
-    ConformerSmallTrainConfig,
-    ConformerMediumTrainConfig,
-    ConformerLargeTrainConfig,
-    RNNTTrainConfig
-)
-
+from kospeech.models import DeepSpeech2Config
+# from kospeech.trainer import (
+#     SupervisedTrainer,
+#     DeepSpeech2TrainConfig
+# )
+from kospeech.trainer.supervised_trainer import SupervisedTrainer
 
 KSPONSPEECH_VOCAB_PATH = '../../../data/vocab/kspon_sentencepiece.vocab'
 KSPONSPEECH_SP_MODEL_PATH = '../../../data/vocab/kspon_sentencepiece.model'
@@ -136,23 +117,7 @@ cs.store(group="audio", name="melspectrogram", node=MelSpectrogramConfig, packag
 cs.store(group="audio", name="mfcc", node=MfccConfig, package="audio")
 cs.store(group="audio", name="spectrogram", node=SpectrogramConfig, package="audio")
 cs.store(group="train", name="ds2_train", node=DeepSpeech2TrainConfig, package="train")
-cs.store(group="train", name="las_train", node=ListenAttendSpellTrainConfig, package="train")
-cs.store(group="train", name="transformer_train", node=TransformerTrainConfig, package="train")
-cs.store(group="train", name="jasper_train", node=JasperTrainConfig, package="train")
-cs.store(group="train", name="conformer_small_train", node=ConformerSmallTrainConfig, package="train")
-cs.store(group="train", name="conformer_medium_train", node=ConformerMediumTrainConfig, package="train")
-cs.store(group="train", name="conformer_large_train", node=ConformerLargeTrainConfig, package="train")
-cs.store(group="train", name="rnnt_train", node=RNNTTrainConfig, package="train")
 cs.store(group="model", name="ds2", node=DeepSpeech2Config, package="model")
-cs.store(group="model", name="las", node=ListenAttendSpellConfig, package="model")
-cs.store(group="model", name="transformer", node=TransformerConfig, package="model")
-cs.store(group="model", name="jasper", node=JasperConfig, package="model")
-cs.store(group="model", name="joint-ctc-attention-las", node=JointCTCAttentionLASConfig, package="model")
-cs.store(group="model", name="joint-ctc-attention-transformer", node=JointCTCAttentionTransformerConfig, package="model")
-cs.store(group="model", name="conformer-small", node=ConformerSmallConfig, package="model")
-cs.store(group="model", name="conformer-medium", node=ConformerMediumConfig, package="model")
-cs.store(group="model", name="conformer-large", node=ConformerLargeConfig, package="model")
-cs.store(group="model", name="rnnt", node=RNNTransducerConfig, package="model")
 
 
 @hydra.main(config_path=os.path.join('..', "configs"), config_name="train")

@@ -19,7 +19,7 @@ import torch.nn as nn
 
 from kospeech.utils import logger
 from kospeech.data import SpectrogramDataset
-from kospeech.models import ListenAttendSpell
+# from kospeech.models import ListenAttendSpell
 from kospeech.optim import Optimizer
 
 
