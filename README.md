@@ -42,7 +42,7 @@ pip install -e .
 ```sh
 bash preprocess_data.sh
 ```
-- Output: vocab.csv
+- Output: "vocab.csv", "transcripts.txtg"
 
 
 # Train
