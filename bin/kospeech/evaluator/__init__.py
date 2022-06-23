@@ -13,13 +13,15 @@
 # limitations under the License.
 
 from dataclasses import dataclass
+from pathlib import Path
 
+root_dir = Path(__file__).parents[3]
 
 @dataclass
 class EvalConfig:
     dataset: str = 'kspon'
     dataset_path: str = ''
-    transcripts_path: str = '../../../data/eval_transcript.txt'
+    transcripts_path: str = root_dir / "dataset/kspon/transcripts.txt"
     model_path: str = ''
     output_unit: str = 'character'
     batch_size: int = 32

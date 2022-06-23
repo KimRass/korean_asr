@@ -15,13 +15,15 @@
 import math
 from dataclasses import dataclass
 from kospeech.trainer.supervised_trainer import SupervisedTrainer
+from pathlib import Path
 
+root_dir = Path(__file__).parents[3]
 
 @dataclass
 class TrainConfig:
     dataset: str = "kspon"
     dataset_path: str = "???"
-    transcripts_path: str = "../../../data/transcripts.txt"
+    transcripts_path: str = root_dir / "dataset/kspon/transcripts.txt"
     output_unit: str = "character"
 
     batch_size: int = 32

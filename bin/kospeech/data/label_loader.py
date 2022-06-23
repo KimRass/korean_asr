@@ -40,7 +40,7 @@ def load_dataset(transcripts_path: str) -> Tuple[list, list]:
 
     with open(transcripts_path, encoding='utf-8') as f:
         for idx, line in enumerate(f.readlines()):
-            audio_path, korean_transcript ,transcript = line.split('\t')
+            audio_path, korean_transcript, transcript = line.split('\t')
             transcript = transcript.replace('\n', '')
 
             audio_paths.append(audio_path)

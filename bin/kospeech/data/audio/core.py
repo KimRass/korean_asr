@@ -35,11 +35,10 @@ def load_audio(audio_path: str, del_silence: bool = False, extension='wav') -> n
             if del_silence:
                 non_silence_indices = split(signal, top_db=30)
                 signal = np.concatenate([signal[start:end] for start, end in non_silence_indices])
-
             return signal / 32767  # normalize audio
 
         elif extension == 'wav' or extension == 'flac':
-            # 이 새끼가 문제다 -> 절대경로로 ^^ / audio file의 rate를 잘 사용해야함. 보통 16000
+            # 이 새끼가 문제다 -> 절대경로로 ^^
             signal, _ = librosa.core.load(audio_path, sr=16000)
             return signal
 

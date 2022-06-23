@@ -17,9 +17,9 @@ import random
 import warnings
 import torch
 import torch.nn as nn
-# import hydra
-# from hydra.core.config_store import ConfigStore
-# from omegaconf import OmegaConf, DictConfig
+import hydra
+from hydra.core.config_store import ConfigStore
+from omegaconf import OmegaConf, DictConfig
 
 from kospeech.data.data_loader import split_dataset
 from kospeech.optim import Optimizer
@@ -41,16 +41,16 @@ from kospeech.data.audio import (
     SpectrogramConfig,
 )
 from kospeech.models import DeepSpeech2Config
-# from kospeech.trainer import (
-#     SupervisedTrainer,
-#     DeepSpeech2TrainConfig
-# )
-from kospeech.trainer.supervised_trainer import SupervisedTrainer
+from kospeech.trainer import (
+    SupervisedTrainer,
+    DeepSpeech2TrainConfig
+)
+# from kospeech.trainer.supervised_trainer import SupervisedTrainer
 
-KSPONSPEECH_VOCAB_PATH = '../../../data/vocab/kspon_sentencepiece.vocab'
-KSPONSPEECH_SP_MODEL_PATH = '../../../data/vocab/kspon_sentencepiece.model'
-LIBRISPEECH_VOCAB_PATH = '../../../data/vocab/tokenizer.vocab'
-LIBRISPEECH_TOKENIZER_PATH = '../../../data/vocab/tokenizer.model'
+KSPONSPEECH_VOCAB_PATH = '../data/vocab/kspon_sentencepiece.vocab'
+KSPONSPEECH_SP_MODEL_PATH = '../data/vocab/kspon_sentencepiece.model'
+# LIBRISPEECH_VOCAB_PATH = '../../../data/vocab/tokenizer.vocab'
+# LIBRISPEECH_TOKENIZER_PATH = '../../../data/vocab/tokenizer.model'
 
 
 def train(config: DictConfig) -> nn.DataParallel:
@@ -60,12 +60,13 @@ def train(config: DictConfig) -> nn.DataParallel:
     device = check_envirionment(config.train.use_cuda)
     if hasattr(config.train, "num_threads") and int(config.train.num_threads) > 0:
         torch.set_num_threads(config.train.num_threads)
-  
+
     vocab = KsponSpeechVocabulary(
-        f'../../../data/vocab/cssiri_{config.train.output_unit}_vocabs.csv',
+        # vocab_path=f"../data/vocab/ksponspeech_{config.train.output_unit}_vocabs.csv",
+        vocab_path=f"/Users/jongbeom.kim/Desktop/workspace/korean_asr/data/vocab/ksponspeech_{config.train.output_unit}_vocabs.csv",
         output_unit=config.train.output_unit,
     )
-            
+
     if not config.train.resume:
         epoch_time_step, trainset_list, validset = split_dataset(config, config.train.transcripts_path, vocab)
         model = build_model(config, vocab, device)
@@ -120,13 +121,18 @@ cs.store(group="train", name="ds2_train", node=DeepSpeech2TrainConfig, package="
 cs.store(group="model", name="ds2", node=DeepSpeech2Config, package="model")
 
 
-@hydra.main(config_path=os.path.join('..', "configs"), config_name="train")
+# @hydra.main(config_path=os.path.join('..', "configs"), config_name="train")
+@hydra.main(config_path="../configs", config_name="train")
 def main(config: DictConfig) -> None:
     warnings.filterwarnings('ignore')
+
     logger.info(OmegaConf.to_yaml(config))
     last_model_checkpoint = train(config)
-    torch.save(last_model_checkpoint, os.path.join(os.getcwd(), "last_model_checkpoint.pt"))
+    torch.save(
+        last_model_checkpoint,
+        os.path.join(os.getcwd(), "last_model_checkpoint.pt")
+    )
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

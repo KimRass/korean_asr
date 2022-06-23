@@ -93,12 +93,12 @@ class KsponSpeechVocabulary(Vocabulary):
             sentences.append(sentence)
         return sentences
 
-    def load_vocab(self, label_path, encoding='utf-8'):
+    def load_vocab(self, vocab_path, encoding='utf-8'):
         """
         Provides char2id, id2char
 
         Args:
-            label_path (str): csv file with character labels
+            vocab_path (str): csv file with character labels
             encoding (str): encoding method
 
         Returns: unit2id, id2unit
@@ -109,7 +109,7 @@ class KsponSpeechVocabulary(Vocabulary):
         id2unit = dict()
 
         try:
-            with open(label_path, 'r', encoding=encoding) as f:
+            with open(vocab_path, 'r', encoding=encoding) as f:
                 labels = csv.reader(f, delimiter=',')
                 next(labels)
 
@@ -122,4 +122,4 @@ class KsponSpeechVocabulary(Vocabulary):
 
             return unit2id, id2unit
         except IOError:
-            raise IOError("Character label file (csv format) doesn`t exist : {0}".format(label_path))
+            raise IOError("Character label file (csv format) doesn`t exist : {0}".format(vocab_path))

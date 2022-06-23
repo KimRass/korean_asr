@@ -1,4 +1,4 @@
-audio_extension: wav
+audio_extension: pcm
 transform_method: fbank
 sample_rate: 16000
 frame_length: 20

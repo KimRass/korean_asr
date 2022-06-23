@@ -39,7 +39,7 @@ import datetime as dt
 now = dt.datetime.now()
 formattedDate = now.strftime("%y%m%d_%H시%M분")
 
-def parse_audio(audio_path: str, del_silence: bool = False, audio_extension: str = 'wav') -> Tensor:
+def parse_audio(audio_path: str, del_silence: bool = False, audio_extension: str = 'pcm') -> Tensor:
     signal = load_audio(audio_path, del_silence, extension=audio_extension)
     feature = torchaudio.compliance.kaldi.fbank(
         waveform=Tensor(signal).unsqueeze(0),

@@ -236,8 +236,8 @@ def build_deepspeech2(
         raise ParameterError("hidden_dim should be greater than 0")
     if num_rnn_layers < 0:
         raise ParameterError("num_layers should be greater than 0")
-    if rnn_type.lower() not in EncoderRNN.supported_rnns.keys():
-        raise ParameterError("Unsupported RNN Cell: {0}".format(rnn_type))
+    # if rnn_type.lower() not in EncoderRNN.supported_rnns.keys():
+    #     raise ParameterError("Unsupported RNN Cell: {0}".format(rnn_type))
 
     return nn.DataParallel(DeepSpeech2(
         input_dim=input_size,

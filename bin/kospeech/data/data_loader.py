@@ -20,13 +20,10 @@ import random
 from omegaconf import DictConfig
 from torch.utils.data import Dataset
 
-
 from kospeech.data import load_dataset
 from kospeech.utils import logger
 from kospeech.data import SpectrogramParser
 from kospeech.vocabs import Vocabulary
-
-
 
 
 class SpectrogramDataset(Dataset, SpectrogramParser):
@@ -51,7 +48,7 @@ class SpectrogramDataset(Dataset, SpectrogramParser):
             config: DictConfig,             # set of arguments
             spec_augment: bool = False,     # flag indication whether to use spec-augmentation of not
             dataset_path: str = None,       # path of dataset,
-            audio_extension: str = 'wav'    # audio extension
+            audio_extension: str = 'pcm'    # audio extension
     ) -> None:
         super(SpectrogramDataset, self).__init__(
             feature_extract_by=config.audio.feature_extract_by, sample_rate=config.audio.sample_rate,
@@ -268,11 +265,11 @@ def split_dataset(config: DictConfig, transcripts_path: str, vocab: Vocabulary):
 
     # train_num / num_worker 의 데이터에 대해, augmentation을 반복(num_woker만큼) + 나머지는 augmentation 하지 않고 shuffle만
     if config.train.dataset == 'kspon':
-        train_num = 280000
-        valid_num = 30000
-    elif config.train.dataset == 'libri':
-        train_num = 281241
-        valid_num = 5567
+        train_num = 10000
+        valid_num = 2400
+    # elif config.train.dataset == 'libri':
+    #     train_num = 281241
+    #     valid_num = 5567
     else:
         raise NotImplementedError("Unsupported Dataset : {0}".format(config.train.dataset))
 
