@@ -12,20 +12,20 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from dataclasses import dataclass
+
+class Vocabulary(object):
+    """
+    Note:
+        Do not use this class directly, use one of the sub classes.
+    """
+    def __init__(self, *args, **kwargs):
+        self.sos_id = None
+        self.eos_id = None
+        self.pad_id = None
+        self.blank_id = None
+
+    def label_to_string(self, labels):
+        raise NotImplementedError
 
 
-@dataclass
-class ModelConfig:
-    architecture: str = "???"
-    teacher_forcing_ratio: float = 1.0
-    teacher_forcing_step: float = 0.01
-    min_teacher_forcing_ratio: float = 0.9
-    dropout: float = 0.3
-    bidirectional: bool = False
-    joint_ctc_attention: bool = False
-    max_len: int = 400
-
-
-from kospeech.models.deepspeech2.model import DeepSpeech2
-from kospeech.models.deepspeech2 import DeepSpeech2Config
+from kospeech.vocabs.ksponspeech import KsponSpeechVocabulary

@@ -30,14 +30,6 @@ def get_args():
     return parser.parse_args()
 
 
-def log_info(args):
-    print("Dataset Path : %s" % args.data_dir)
-    print("Vocab Destination : %s" % args.vocab_dir)
-    print("Save Path : %s" % args.save_path)
-    print("Output-Unit : %s" % args.output_unit)
-    print("Preprocess Mode : %s" % args.preprocess_mode)
-
-
 def bracket_filter(sentence, mode="phonetic"):
     new_sentence = str()
 
@@ -134,13 +126,10 @@ def main():
     output_unit = args.output_unit
     preprocess_mode = args.preprocess_mode
 
-    log_info(args)
-
     ls_audio_path, ls_transcript = preprocess(
         data_dir=data_dir,
         mode=preprocess_mode
     )
-    print(args.output_unit)
     if args.output_unit == "character":
         create_vocab_csv(ls_transcript, vocab_dir, vocab_size)
         create_transcripts_txt(ls_audio_path, ls_transcript, vocab_dir)

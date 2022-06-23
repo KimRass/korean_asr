@@ -1,17 +1,3 @@
-# Copyright (c) 2020, Soohwan Kim. All rights reserved.
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#     http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-
 import os
 import random
 import warnings
@@ -49,14 +35,13 @@ from kospeech.trainer import (
 
 KSPONSPEECH_VOCAB_PATH = '../data/vocab/kspon_sentencepiece.vocab'
 KSPONSPEECH_SP_MODEL_PATH = '../data/vocab/kspon_sentencepiece.model'
-# LIBRISPEECH_VOCAB_PATH = '../../../data/vocab/tokenizer.vocab'
-# LIBRISPEECH_TOKENIZER_PATH = '../../../data/vocab/tokenizer.model'
 
 
 def train(config: DictConfig) -> nn.DataParallel:
     random.seed(config.train.seed)
     torch.manual_seed(config.train.seed)
     torch.cuda.manual_seed_all(config.train.seed)
+
     device = check_envirionment(config.train.use_cuda)
     if hasattr(config.train, "num_threads") and int(config.train.num_threads) > 0:
         torch.set_num_threads(config.train.num_threads)
@@ -113,24 +98,24 @@ def train(config: DictConfig) -> nn.DataParallel:
 
 
 cs = ConfigStore.instance()
-cs.store(group="audio", name="fbank", node=FilterBankConfig, package="audio")
-cs.store(group="audio", name="melspectrogram", node=MelSpectrogramConfig, package="audio")
-cs.store(group="audio", name="mfcc", node=MfccConfig, package="audio")
-cs.store(group="audio", name="spectrogram", node=SpectrogramConfig, package="audio")
-cs.store(group="train", name="ds2_train", node=DeepSpeech2TrainConfig, package="train")
-cs.store(group="model", name="ds2", node=DeepSpeech2Config, package="model")
+# cs.store(group="audio", name="fbank", node=FilterBankConfig, package="audio")
+# cs.store(group="audio", name="melspectrogram", node=MelSpectrogramConfig, package="audio")
+# cs.store(group="audio", name="mfcc", node=MfccConfig, package="audio")
+# cs.store(group="audio", name="spectrogram", node=SpectrogramConfig, package="audio")
+cs.store(name="ds2_train", group="train", node=DeepSpeech2TrainConfig, package="train")
+cs.store(name="ds2", group="model", node=DeepSpeech2Config, package="model")
 
 
-# @hydra.main(config_path=os.path.join('..', "configs"), config_name="train")
+# "configs/train.yaml"
 @hydra.main(config_path="../configs", config_name="train")
 def main(config: DictConfig) -> None:
-    warnings.filterwarnings('ignore')
+    # warnings.filterwarnings("ignore")
 
     logger.info(OmegaConf.to_yaml(config))
+
     last_model_checkpoint = train(config)
     torch.save(
-        last_model_checkpoint,
-        os.path.join(os.getcwd(), "last_model_checkpoint.pt")
+        last_model_checkpoint, "last_model_checkpoint.pt"
     )
 
 
