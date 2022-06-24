@@ -1,44 +1,4 @@
-# Packages
-```sh
-pip install torch
-pip install omegaconf
-pip install Levenshtein
-pip install hydra-core --upgrade
-```
-
-# Install
-```sh
-pip install -e .
-```
-
-# Preprocess
-## Run
-- Set options in "preprocess_data.sh"
-```sh
-bash preprocess_data.sh
-```
-- Output: "vocab.csv", "transcripts.txtg"
-
-
-# Train
-## Configurations
-- "kospeech/models/__init__.py": `ModelConfig`
-- "kospeech/models/deepspeech2/__init__.py": `DeepSpeech2Config`
-- "kospeech/trainer/__init__.py": `TrainConfig`
-- "kospeech/trainer/__init__.py": `DeepSpeech2TrainConfig`
-## Run
-- Set options in "/bin/train_ds2.sh"
-```sh
-# /bin
-bash train_ds2.sh
-```
-
-# Interence
-```sh
-python3 bin/inference.py --model_path $model_path --audio_path $audio_path --device 'cpu'
-```
-
-audio:
+[2022-06-24 17:56:31,219][kospeech.utils][INFO] - audio:
   audio_extension: pcm
   transform_method: fbank
   sample_rate: 16000
@@ -91,3 +51,9 @@ train:
   warmup_steps: 400
   weight_decay: 1.0e-05
   reduction: mean
+
+[2022-06-24 17:56:31,223][kospeech.utils][INFO] - Operating System : Darwin 20.6.0
+[2022-06-24 17:56:31,234][kospeech.utils][INFO] - Processor : i386
+[2022-06-24 17:56:31,235][kospeech.utils][INFO] - CUDA is available : False
+[2022-06-24 17:56:31,235][kospeech.utils][INFO] - PyTorch version : 1.11.0
+[2022-06-24 17:56:31,241][kospeech.utils][INFO] - split dataset start !!

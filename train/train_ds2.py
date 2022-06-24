@@ -97,26 +97,26 @@ def train(config: DictConfig) -> nn.DataParallel:
     return model
 
 
-cs = ConfigStore.instance()
+# cs = ConfigStore.instance()
 # cs.store(group="audio", name="fbank", node=FilterBankConfig, package="audio")
 # cs.store(group="audio", name="melspectrogram", node=MelSpectrogramConfig, package="audio")
 # cs.store(group="audio", name="mfcc", node=MfccConfig, package="audio")
 # cs.store(group="audio", name="spectrogram", node=SpectrogramConfig, package="audio")
-cs.store(name="ds2_train", group="train", node=DeepSpeech2TrainConfig, package="train")
-cs.store(name="ds2", group="model", node=DeepSpeech2Config, package="model")
+# cs.store(name="ds2_train", group="train", node=DeepSpeech2TrainConfig, package="train")
+# cs.store(name="ds2", group="model", node=DeepSpeech2Config, package="model")
 
 
 # "configs/train.yaml"
-@hydra.main(config_path="../configs", config_name="train")
+@hydra.main(version_base=None, config_path="../configs", config_name="train")
 def main(config: DictConfig) -> None:
     # warnings.filterwarnings("ignore")
 
     logger.info(OmegaConf.to_yaml(config))
 
-    last_model_checkpoint = train(config)
-    torch.save(
-        last_model_checkpoint, "last_model_checkpoint.pt"
-    )
+    # last_model_checkpoint = train(config)
+    # torch.save(
+    #     last_model_checkpoint, "last_model_checkpoint.pt"
+    # )
 
 
 if __name__ == "__main__":
