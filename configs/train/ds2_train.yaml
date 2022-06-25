@@ -29,3 +29,7 @@ max_grad_norm: 400
 warmup_steps: 400
 weight_decay: 1e-05
 reduction: "mean"
+
+# ??
+lr_scheduler: "tri_stage_lr_scheduler"
+total_steps: 10

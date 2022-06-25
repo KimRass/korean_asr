@@ -1,0 +1,15 @@
+[2022-06-25 00:20:51,033][kospeech.utils][INFO] - model:
+  architecture: deepspeech2
+  teacher_forcing_ratio: 1.0
+  teacher_forcing_step: 0.01
+  min_teacher_forcing_ratio: 0.9
+  dropout: 0.3
+  bidirectional: false
+  joint_ctc_attention: false
+  max_len: 400
+  use_bidirectional: true
+  rnn_type: gru
+  hidden_dim: 1024
+  activation: hardtanh
+  num_encoder_layers: 3
+

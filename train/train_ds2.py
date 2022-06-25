@@ -4,7 +4,7 @@ import warnings
 import torch
 import torch.nn as nn
 import hydra
-from hydra.core.config_store import ConfigStore
+# from hydra.core.config_store import ConfigStore
 from omegaconf import OmegaConf, DictConfig
 
 from kospeech.data.data_loader import split_dataset
@@ -20,17 +20,15 @@ from kospeech.utils import (
 from kospeech.vocabs import (
     KsponSpeechVocabulary
 )
-from kospeech.data.audio import (
-    FilterBankConfig,
-    MelSpectrogramConfig,
-    MfccConfig,
-    SpectrogramConfig,
-)
-from kospeech.models import DeepSpeech2Config
-from kospeech.trainer import (
-    SupervisedTrainer,
-    DeepSpeech2TrainConfig
-)
+# from kospeech.data.audio import (
+#     FilterBankConfig,
+#     MelSpectrogramConfig,
+#     MfccConfig,
+#     SpectrogramConfig,
+# )
+# from kospeech.models import DeepSpeech2Config
+from kospeech.trainer import SupervisedTrainer
+# from kospeech.trainer import SupervisedTrainer, DeepSpeech2TrainConfig
 # from kospeech.trainer.supervised_trainer import SupervisedTrainer
 
 KSPONSPEECH_VOCAB_PATH = '../data/vocab/kspon_sentencepiece.vocab'
@@ -47,21 +45,25 @@ def train(config: DictConfig) -> nn.DataParallel:
         torch.set_num_threads(config.train.num_threads)
 
     vocab = KsponSpeechVocabulary(
-        # vocab_path=f"../data/vocab/ksponspeech_{config.train.output_unit}_vocabs.csv",
-        vocab_path=f"/Users/jongbeom.kim/Desktop/workspace/korean_asr/data/vocab/ksponspeech_{config.train.output_unit}_vocabs.csv",
+        vocab_path=f"/Users/jongbeom.kim/Documents/ksponspeech/data/vocabs.csv",
         output_unit=config.train.output_unit,
     )
 
     if not config.train.resume:
-        epoch_time_step, trainset_list, validset = split_dataset(config, config.train.transcripts_path, vocab)
+        epoch_time_step, trainset_list, validset = split_dataset(
+            config=config,
+            transcripts_path=config.train.transcripts_path,
+            vocab=vocab
+        )
         model = build_model(config, vocab, device)
 
         optimizer = get_optimizer(model, config)
         lr_scheduler = get_lr_scheduler(config, optimizer, epoch_time_step)
 
-        optimizer = Optimizer(optimizer, lr_scheduler, config.train.total_steps, config.train.max_grad_norm)
+        optimizer = Optimizer(
+            optimizer, lr_scheduler, config.train.total_steps, config.train.max_grad_norm
+        )
         criterion = get_criterion(config, vocab)
-
     else:
         trainset_list = None
         validset = None
@@ -97,26 +99,16 @@ def train(config: DictConfig) -> nn.DataParallel:
     return model
 
 
-# cs = ConfigStore.instance()
-# cs.store(group="audio", name="fbank", node=FilterBankConfig, package="audio")
-# cs.store(group="audio", name="melspectrogram", node=MelSpectrogramConfig, package="audio")
-# cs.store(group="audio", name="mfcc", node=MfccConfig, package="audio")
-# cs.store(group="audio", name="spectrogram", node=SpectrogramConfig, package="audio")
-# cs.store(name="ds2_train", group="train", node=DeepSpeech2TrainConfig, package="train")
-# cs.store(name="ds2", group="model", node=DeepSpeech2Config, package="model")
-
-
-# "configs/train.yaml"
-@hydra.main(version_base=None, config_path="../configs", config_name="train")
+@hydra.main(version_base=None, config_path="../configs")
 def main(config: DictConfig) -> None:
-    # warnings.filterwarnings("ignore")
+    warnings.filterwarnings("ignore")
 
     logger.info(OmegaConf.to_yaml(config))
 
-    # last_model_checkpoint = train(config)
-    # torch.save(
-    #     last_model_checkpoint, "last_model_checkpoint.pt"
-    # )
+    last_model_checkpoint = train(config)
+    torch.save(
+        last_model_checkpoint, "last_model_checkpoint.pt"
+    )
 
 
 if __name__ == "__main__":

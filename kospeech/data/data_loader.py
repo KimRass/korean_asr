@@ -86,9 +86,10 @@ class SpectrogramDataset(Dataset, SpectrogramParser):
                 self.transcripts.append(self.transcripts[idx])
 
     def shuffle(self):
-        """ Shuffle dataset """
         print("뚱", len(self.audio_paths), len(self.transcripts), len(self.augment_methods))
-        tmp = list(zip(self.audio_paths, self.transcripts, self.augment_methods))
+        tmp = list(
+            zip(self.audio_paths, self.transcripts, self.augment_methods)
+        )
         random.shuffle(tmp)
         self.audio_paths, self.transcripts, self.augment_methods = zip(*tmp)
 
@@ -246,7 +247,7 @@ def split_dataset(config: DictConfig, transcripts_path: str, vocab: Vocabulary):
         - **trainset_list** (list): list of training dataset
         - **validset** (data_loader.MelSpectrogramDataset): validation dataset
     """
-    logger.info("split dataset start !!")
+    logger.info("Splitting dataset...")
     trainset_list = list()
 
     # train_num / num_worker 의 데이터에 대해, augmentation을 반복(num_woker만큼) + 나머지는 augmentation 하지 않고 shuffle만
@@ -260,7 +261,6 @@ def split_dataset(config: DictConfig, transcripts_path: str, vocab: Vocabulary):
         raise NotImplementedError("Unsupported Dataset : {0}".format(config.train.dataset))
 
     audio_paths, transcripts = load_dataset(transcripts_path)
-
     
     total_time_step = math.ceil(len(audio_paths) / config.train.batch_size)
     valid_time_step = math.ceil(valid_num / config.train.batch_size)

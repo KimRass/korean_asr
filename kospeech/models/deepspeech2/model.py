@@ -34,12 +34,12 @@ class BNReluRNN(nn.Module):
     }
 
     def __init__(
-            self,
-            input_size: int,  # size of input
-            hidden_state_dim: int = 512,  # dimension of RNN`s hidden state
-            rnn_type: str = 'gru',  # type of RNN cell
-            bidirectional: bool = True,  # if True, becomes a bidirectional rnn
-            dropout_p: float = 0.1,  # dropout probability
+        self,
+        input_size: int,  # size of input
+        hidden_state_dim: int = 512,  # dimension of RNN`s hidden state
+        rnn_type: str = 'gru',  # type of RNN cell
+        bidirectional: bool = True,  # if True, becomes a bidirectional rnn
+        dropout_p: float = 0.1,  # dropout probability
     ):
         super(BNReluRNN, self).__init__()
         self.hidden_state_dim = hidden_state_dim

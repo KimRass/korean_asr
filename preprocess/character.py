@@ -1,39 +1,8 @@
-import os
 import pandas as pd
 
-# id/char 사전 만들기
-def load_vocab_csv(vocab_csv_path):
-    char2id = dict()
-    id2char = dict()
 
-    ch_labels = pd.read_csv(vocab_csv_path, encoding="utf-8")
-
-    id_list = ch_labels["id"]
-    char_list = ch_labels["char"]
-    freq_list = ch_labels["freq"]
-
-    for (id_, char, freq) in zip(id_list, char_list, freq_list):
-        char2id[char] = id_
-        id2char[id_] = char
-    return char2id, id2char
-
-
-# 문장을 id로
-def sentence_to_target(sentence, char2id):
-    target = str()
-
-    for ch in sentence:
-        try:
-            target += (str(char2id[ch]) + ' ')
-        # 사전에 없는 경우 넘어가라 -> 그냥 묵음처리나 마찬가지.
-        except KeyError as e:
-            continue
-
-    return target[:-1]
-
-
-def create_vocab_csv(ls_transcript, vocab_dir, vocab_size):
-    print("Creating 'vocab.csv'...", end=" ")
+def create_vocabs_csv(ls_transcript, vocab_size, save_dir):
+    print("Creating 'vocabs.csv'...", end=" ")
 
     label_list = list()
     label_freq = list()
@@ -49,37 +18,55 @@ def create_vocab_csv(ls_transcript, vocab_dir, vocab_size):
         *sorted(zip(label_freq, label_list), reverse=True)
     )
     label = {
-        'id': [0, 1, 2],
-        'char': ['<pad>', '<sos>', '<eos>'],
-        'freq': [0, 0, 0]
+        "idx": [0, 1, 2],
+        "char": ["<pad>", "<sos>", "<eos>"],
+        "freq": [0, 0, 0]
     }
 
-    for idx, (ch, freq) in enumerate(zip(label_list, label_freq)):
-        label['id'].append(idx + 3)
-        label['char'].append(ch)
-        label['freq'].append(freq)
+    for idxx, (char, freq) in enumerate(zip(label_list, label_freq)):
+        label["idx"].append(idxx + 3)
+        label["char"].append(char)
+        label["freq"].append(freq)
 
-    label['id'] = label['id'][:vocab_size]
-    label['char'] = label['char'][:vocab_size]
-    label['freq'] = label['freq'][:vocab_size]
+    label["idx"] = label["idx"][:vocab_size]
+    label["char"] = label["char"][:vocab_size]
+    label["freq"] = label["freq"][:vocab_size]
 
     label_df = pd.DataFrame(label)
     label_df.to_csv(
-        vocab_dir / "vocab.csv", encoding="utf-8", index=False
+        save_dir / "vocabs.csv", encoding="utf-8", index=False
     )
     
     print("completed!")
 
 
-def create_transcripts_txt(ls_audio_path, ls_transcript, vocab_dir):
+def get_character_to_index(vocabs_csv_path):
+    char2idx = dict()
+    idx2char = dict()
+
+    df_vocabs = pd.read_csv(vocabs_csv_path, encoding="utf-8")
+    for _, row in df_vocabs.iterrows():
+        char2idx[row["char"]] = row["idx"]
+    return char2idx
+
+
+def convert_transcript_to_sequence_of_indices(transcript, char2idx):
+    sequence_of_indices = ""
+    for char in transcript:
+        if char in char2idx:
+            sequence_of_indices += (str(char2idx[char]) + " ")
+    return sequence_of_indices[:-1]
+
+
+def create_transcripts_txt(ls_audio_path, ls_transcript, save_dir):
     print("Creating 'transcripts.txt'...", end=" ")
 
-    char2id, id2char = load_vocab_csv(vocab_csv_path=vocab_dir / "vocab.csv")
+    char2idx = get_character_to_index(vocabs_csv_path=save_dir / "vocabs.csv")
 
-    with open(vocab_dir / "transcripts.txt", mode="w") as f:
+    with open(save_dir / "transcripts.txt", mode="w") as f:
         for audio_path, transcript in zip(ls_audio_path, ls_transcript):
-            char_id_transcript = sentence_to_target(transcript, char2id)
-            audio_path = str(audio_path).replace("txt", "wav")
+            sequence_of_indices = convert_transcript_to_sequence_of_indices(transcript, char2idx)
+            audio_path = str(audio_path).replace("txt", "pcm")
 
-            f.write(f"{audio_path}\t{transcript}\t{char_id_transcript}\n")
+            f.write(f"{audio_path}\t{transcript}\t{sequence_of_indices}\n")
     print("completed!")

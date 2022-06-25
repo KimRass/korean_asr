@@ -1,0 +1,72 @@
+[2022-06-25 14:15:58,036][kospeech.utils][INFO] - model:
+  architecture: deepspeech2
+  hidden_dim: 1024
+  dropout: 0.3
+  num_encoder_layers: 3
+  rnn_type: gru
+  max_len: 400
+  activation: hardtanh
+  teacher_forcing_ratio: 1.0
+  teacher_forcing_step: 0.0
+  min_teacher_forcing_ratio: 1.0
+  joint_ctc_attention: false
+  use_bidirectional: true
+train:
+  dataset: kspon
+  dataset_path: ''
+  transcripts_path: /Users/jongbeom.kim/Documents/ksponspeech/data/transcripts.txt
+  output_unit: character
+  num_epochs: 70
+  batch_size: 32
+  save_result_every: 1000
+  checkpoint_every: 5000
+  print_every: 10
+  mode: train
+  seed: 777
+  resume: false
+  num_workers: 4
+  use_cuda: true
+  optimizer: adam
+  init_lr: 1.0e-06
+  final_lr: 1.0e-06
+  peak_lr: 0.0001
+  init_lr_scale: 0.01
+  final_lr_scale: 0.05
+  max_grad_norm: 400
+  warmup_steps: 400
+  weight_decay: 1.0e-05
+  reduction: mean
+  lr_scheduler: tri_stage_lr_scheduler
+  total_steps: 10
+audio:
+  audio_extension: pcm
+  transform_method: mel
+  sample_rate: 16000
+  frame_length: 20
+  frame_shift: 10
+  n_mels: 80
+  normalize: true
+  del_silence: true
+  feature_extract_by: librosa
+  freq_mask_para: 18
+  time_mask_num: 4
+  freq_mask_num: 2
+  spec_augment: true
+  input_reverse: false
+
+[2022-06-25 14:15:58,038][kospeech.utils][INFO] - Operating System : Darwin 20.6.0
+[2022-06-25 14:15:58,044][kospeech.utils][INFO] - Processor : i386
+[2022-06-25 14:15:58,045][kospeech.utils][INFO] - CUDA is available : False
+[2022-06-25 14:15:58,045][kospeech.utils][INFO] - PyTorch version : 1.11.0
+[2022-06-25 14:15:58,049][kospeech.utils][INFO] - split dataset start !!
+[2022-06-25 14:15:58,346][kospeech.utils][INFO] - Applying Spec Augmentation...
+[2022-06-25 14:15:58,354][kospeech.utils][INFO] - Applying Spec Augmentation...
+[2022-06-25 14:15:58,360][kospeech.utils][INFO] - Applying Spec Augmentation...
+[2022-06-25 14:15:58,366][kospeech.utils][INFO] - Applying Spec Augmentation...
+[2022-06-25 14:15:58,630][kospeech.utils][INFO] - split dataset complete !!
+[2022-06-25 14:15:58,931][kospeech.utils][INFO] - start
+[2022-06-25 14:15:58,931][kospeech.utils][INFO] - Epoch 0 start
+[2022-06-25 14:52:59,970][kospeech.utils][INFO] - step:   10/7600, loss: 38.411598, cer: 23.71, elapsed: 2220.99s 37.02m 0.62h, lr: 0.000002
+[2022-06-25 15:38:18,598][kospeech.utils][INFO] - step:   20/7600, loss: 30.337509, cer: 15.35, elapsed: 2718.63s 82.33m 1.37h, lr: 0.000002
+[2022-06-25 16:26:20,603][kospeech.utils][INFO] - step:   30/7600, loss: 19.432398, cer: 11.58, elapsed: 2882.00s 130.36m 2.17h, lr: 0.000002
+[2022-06-25 17:09:10,162][kospeech.utils][INFO] - step:   40/7600, loss: 9.133060, cer: 9.01, elapsed: 2569.56s 173.19m 2.89h, lr: 0.000002
