@@ -17,12 +17,12 @@ import torch.nn as nn
 from torch import Tensor
 from typing import Tuple
 
-from kospeech.models.modules import Linear
-from kospeech.models.encoder import (
+from utils.models.modules import Linear
+from utils.models.encoder import (
     BaseEncoder,
     TransducerEncoder,
 )
-from kospeech.models.decoder import (
+from utils.models.decoder import (
     BaseDecoder,
     TransducerDecoder,
 )

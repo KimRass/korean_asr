@@ -18,9 +18,9 @@ import torch
 import torch.nn as nn
 
 from utils.utils import logger
-from kospeech.data import SpectrogramDataset
+from utils.data import SpectrogramDataset
 # from kospeech.models import ListenAttendSpell
-from kospeech.optim import Optimizer
+from utils.optim import Optimizer
 
 
 class Checkpoint(object):

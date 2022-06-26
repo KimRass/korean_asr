@@ -28,4 +28,4 @@ class Vocabulary(object):
         raise NotImplementedError
 
 
-from kospeech.vocabs.ksponspeech import KsponSpeechVocabulary
+from utils.vocabs.ksponspeech import KsponSpeechVocabulary

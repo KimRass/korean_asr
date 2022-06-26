@@ -7,16 +7,16 @@ import pandas as pd
 from torch import Tensor
 from typing import Tuple
 
-from kospeech.optim import Optimizer
-from kospeech.vocabs import Vocabulary
-from kospeech.checkpoint import Checkpoint
+from utils.optim import Optimizer
+from utils.vocabs import Vocabulary
+from utils.checkpoint import Checkpoint
 from evaluate.metrics import CharacterErrorRate
 from utils.utils import logger
-from kospeech.criterion import (
+from utils.criterion import (
     LabelSmoothedCrossEntropyLoss,
     JointCTCCrossEntropyLoss,
 )
-from kospeech.data import (
+from utils.data import (
     MultiDataLoader,
     AudioDataLoader,
     SpectrogramDataset,
@@ -349,82 +349,21 @@ class SupervisedTrainer(object):
         return cer
 
     def _model_forward(
-            self,
-            model: nn.Module,
-            inputs: Tensor,
-            input_lengths: Tensor,
-            targets: Tensor,
-            target_lengths: Tensor,
-            teacher_forcing_ratio: float,
-            architecture: str,
+        self,
+        model: nn.Module,
+        inputs: Tensor,
+        input_lengths: Tensor,
+        targets: Tensor,
+        target_lengths: Tensor,
+        teacher_forcing_ratio: float,
+        architecture: str,
     ) -> Tuple[Tensor, Tensor, Tensor, Tensor]:
         ctc_loss = None
         cross_entropy_loss = None
 
-        if architecture == 'las':
-            if isinstance(model, nn.DataParallel):
-                model.module.flatten_parameters()
-            else:
-                model.flatten_parameters()
-
-            outputs, encoder_output_lengths, encoder_log_probs = model(
-                inputs=inputs,
-                input_lengths=input_lengths,
-                targets=targets,
-                teacher_forcing_ratio=teacher_forcing_ratio,
-            )
-
-            if isinstance(self.criterion, LabelSmoothedCrossEntropyLoss):
-                loss = self.criterion(
-                    outputs.contiguous().view(-1, outputs.size(-1)), targets[:, 1:].contiguous().view(-1)
-                )
-            elif isinstance(self.criterion, JointCTCCrossEntropyLoss):
-                loss, ctc_loss, cross_entropy_loss = self.criterion(
-                    encoder_log_probs=encoder_log_probs.transpose(0, 1),
-                    decoder_log_probs=outputs.contiguous().view(-1, outputs.size(-1)),
-                    output_lengths=encoder_output_lengths,
-                    targets=targets[:, 1:],
-                    target_lengths=target_lengths,
-                )
-            else:
-                raise ValueError(f"Unsupported Criterion: {self.criterion}")
-
-        elif architecture == 'transformer':
-            outputs, encoder_output_lengths, encoder_log_probs = model(inputs, input_lengths, targets, target_lengths)
-
-            if isinstance(self.criterion, LabelSmoothedCrossEntropyLoss):
-                loss = self.criterion(
-                    outputs.contiguous().view(-1, outputs.size(-1)), targets[:, 1:].contiguous().view(-1)
-                )
-            elif isinstance(self.criterion, JointCTCCrossEntropyLoss):
-                loss, ctc_loss, cross_entropy_loss = self.criterion(
-                    encoder_log_probs=encoder_log_probs.transpose(0, 1),
-                    decoder_log_probs=outputs.contiguous().view(-1, outputs.size(-1)),
-                    output_lengths=encoder_output_lengths,
-                    targets=targets[:, 1:],
-                    target_lengths=target_lengths,
-                )
-            elif isinstance(self.criterion, nn.CrossEntropyLoss):
-                loss = self.criterion(
-                    outputs.contiguous().view(-1, outputs.size(-1)), targets[:, 1:].contiguous().view(-1)
-                )
-            else:
-                raise ValueError(f"Unsupported Criterion: {self.criterion}")
-
-        elif architecture in ('deepspeech2', 'jasper'):
+        if architecture in ('deepspeech2', 'jasper'):
             outputs, output_lengths = model(inputs, input_lengths)
             loss = self.criterion(outputs.transpose(0, 1), targets[:, 1:], output_lengths, target_lengths)
-
-        elif architecture in ('rnnt', 'conformer_t'):
-            outputs = model(inputs, input_lengths, targets, target_lengths)
-            loss = self.criterion(
-                outputs, targets[:, 1:].contiguous().int(), input_lengths.int(), target_lengths.int()
-            )
-
-        elif architecture == 'conformer_ctc':
-            outputs, output_lengths = model(inputs, input_lengths, targets, target_lengths)
-            loss = self.criterion(outputs.transpose(0, 1), targets[:, 1:], output_lengths, target_lengths)
-
         else:
             raise ValueError("Unsupported model : {0}".format(self.architecture))
 

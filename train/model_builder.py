@@ -3,12 +3,12 @@ import torch.nn as nn
 from omegaconf import DictConfig
 from astropy.modeling import ParameterError
 
-from kospeech.vocabs import Vocabulary
-from kospeech.decode.ensemble import (
+from utils.vocabs import Vocabulary
+from train.ensemble import (
     BasicEnsemble,
     WeightedEnsemble,
 )
-from kospeech.models import DeepSpeech2
+from utils.models import DeepSpeech2
 
 
 def build_model(

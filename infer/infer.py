@@ -66,7 +66,9 @@ def main():
     input_length = torch.LongTensor([len(feature)])
     vocab = KsponSpeechVocabulary(vocabs_csv_path)
 
-    model = torch.load(model_path, map_location=lambda storage, loc: storage).to(device)
+    model = torch.load(
+        model_path, map_location=lambda storage, loc: storage
+    ).to(device)
     if isinstance(model, nn.DataParallel):
         model = model.module
     model.eval()

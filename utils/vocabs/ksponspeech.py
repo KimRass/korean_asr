@@ -1,5 +1,5 @@
 import csv
-from kospeech.vocabs import Vocabulary
+from utils.vocabs import Vocabulary
 
 
 class KsponSpeechVocabulary(Vocabulary):

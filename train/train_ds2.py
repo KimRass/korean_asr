@@ -6,8 +6,8 @@ import torch.nn as nn
 import hydra
 from omegaconf import OmegaConf, DictConfig
 
-from kospeech.data.data_loader import split_dataset
-from kospeech.optim import Optimizer
+from utils.data.data_loader import split_dataset
+from utils.optim import Optimizer
 from train.model_builder import build_model
 from utils.utils import (
     check_envirionment,
@@ -16,8 +16,8 @@ from utils.utils import (
     logger,
     get_lr_scheduler,
 )
-from kospeech.vocabs import KsponSpeechVocabulary
-from kospeech.trainer import SupervisedTrainer
+from utils.vocabs import KsponSpeechVocabulary
+from utils.trainer import SupervisedTrainer
 
 KSPONSPEECH_VOCAB_PATH = '../data/vocab/kspon_sentencepiece.vocab'
 KSPONSPEECH_SP_MODEL_PATH = '../data/vocab/kspon_sentencepiece.model'

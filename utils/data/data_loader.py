@@ -6,10 +6,10 @@ import random
 from omegaconf import DictConfig
 from torch.utils.data import Dataset
 
-from kospeech.data import load_dataset
+from utils.data import load_dataset
 from utils.utils import logger
-from kospeech.data import SpectrogramParser
-from kospeech.vocabs import Vocabulary
+from utils.data import SpectrogramParser
+from utils.vocabs import Vocabulary
 
 
 class SpectrogramDataset(Dataset, SpectrogramParser):

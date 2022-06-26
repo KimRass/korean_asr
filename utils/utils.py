@@ -4,20 +4,20 @@ import logging
 import platform
 from omegaconf import DictConfig
 
-from kospeech.optim.lr_scheduler.lr_scheduler import LearningRateScheduler
-from kospeech.vocabs import Vocabulary
+from utils.optim.lr_scheduler.lr_scheduler import LearningRateScheduler
+from utils.vocabs import Vocabulary
 from torch import optim
 from utils.optim import (
     RAdam,
     AdamP,
     Novograd,
 )
-from kospeech.criterion import (
-    LabelSmoothedCrossEntropyLoss,
-    JointCTCCrossEntropyLoss,
-    TransducerLoss,
-)
-from kospeech.optim.lr_scheduler import (
+# from utils.criterion import (
+#     LabelSmoothedCrossEntropyLoss,
+#     JointCTCCrossEntropyLoss,
+#     TransducerLoss,
+# )
+from utils.optim.lr_scheduler import (
     TriStageLRScheduler,
     TransformerLRScheduler,
 )
@@ -64,14 +64,13 @@ def get_optimizer(model: nn.Module, config: DictConfig):
         f"Unsupported Optimizer: {config.train.optimizer}\n" \
         f"Supported Optimizer: {supported_optimizer.keys()}"
 
-    if config.model.architecture == 'conformer':
-        return optim.Adam(
-            model.parameters(),
-            betas=config.train.optimizer_betas,
-            eps=config.train.optimizer_eps,
-            weight_decay=config.train.weight_decay,
-        )
-
+    # if config.model.architecture == 'conformer':
+    #     return optim.Adam(
+    #         model.parameters(),
+    #         betas=config.train.optimizer_betas,
+    #         eps=config.train.optimizer_eps,
+    #         weight_decay=config.train.weight_decay,
+    #     )
     return supported_optimizer[config.train.optimizer](
         model.module.parameters(),
         lr=config.train.init_lr,
@@ -82,29 +81,6 @@ def get_optimizer(model: nn.Module, config: DictConfig):
 def get_criterion(config: DictConfig, vocab: Vocabulary) -> nn.Module:
     if config.model.architecture in ('deepspeech2', 'jasper'):
         criterion = nn.CTCLoss(blank=vocab.blank_id, reduction=config.train.reduction, zero_infinity=True)
-    elif config.model.architecture in ('las', 'transformer') and config.model.joint_ctc_attention:
-        criterion = JointCTCCrossEntropyLoss(
-            num_classes=len(vocab),
-            ignore_index=vocab.pad_id,
-            reduction=config.train.reduction,
-            ctc_weight=config.model.ctc_weight,
-            cross_entropy_weight=config.model.cross_entropy_weight,
-            blank_id=vocab.blank_id,
-            dim=-1,
-            smoothing=config.train.label_smoothing,
-        )
-    elif config.model.architecture == 'conformer':
-        if config.model.decoder == 'rnnt':
-            criterion = TransducerLoss(blank_id=vocab.blank_id)
-        else:
-            criterion = nn.CTCLoss(blank=vocab.blank_id, reduction=config.train.reduction, zero_infinity=True)
-    elif config.model.architecture == 'rnnt':
-        criterion = TransducerLoss(blank_id=vocab.blank_id)
-    elif config.model.architecture == 'transformer' and config.train.label_smoothing <= 0.0:
-        criterion = nn.CrossEntropyLoss(
-            ignore_index=vocab.pad_id,
-            reduction=config.train.reduction,
-        )
     else:
         criterion = LabelSmoothedCrossEntropyLoss(
             num_classes=len(vocab),
