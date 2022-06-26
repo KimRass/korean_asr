@@ -1,35 +1,23 @@
-import os
+# import os
 import random
 import warnings
 import torch
 import torch.nn as nn
 import hydra
-# from hydra.core.config_store import ConfigStore
 from omegaconf import OmegaConf, DictConfig
 
 from kospeech.data.data_loader import split_dataset
 from kospeech.optim import Optimizer
-from kospeech.model_builder import build_model
-from kospeech.utils import (
+from train.model_builder import build_model
+from utils.utils import (
     check_envirionment,
     get_optimizer,
     get_criterion,
     logger,
     get_lr_scheduler,
 )
-from kospeech.vocabs import (
-    KsponSpeechVocabulary
-)
-# from kospeech.data.audio import (
-#     FilterBankConfig,
-#     MelSpectrogramConfig,
-#     MfccConfig,
-#     SpectrogramConfig,
-# )
-# from kospeech.models import DeepSpeech2Config
+from kospeech.vocabs import KsponSpeechVocabulary
 from kospeech.trainer import SupervisedTrainer
-# from kospeech.trainer import SupervisedTrainer, DeepSpeech2TrainConfig
-# from kospeech.trainer.supervised_trainer import SupervisedTrainer
 
 KSPONSPEECH_VOCAB_PATH = '../data/vocab/kspon_sentencepiece.vocab'
 KSPONSPEECH_SP_MODEL_PATH = '../data/vocab/kspon_sentencepiece.model'
@@ -45,7 +33,7 @@ def train(config: DictConfig) -> nn.DataParallel:
         torch.set_num_threads(config.train.num_threads)
 
     vocab = KsponSpeechVocabulary(
-        vocab_path=f"/Users/jongbeom.kim/Documents/ksponspeech/data/vocabs.csv",
+        vocab_path=config.data.vocabs_csv_path,
         output_unit=config.train.output_unit,
     )
 

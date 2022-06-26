@@ -9,24 +9,12 @@ from subword import *
 
 def get_args():
     parser = argparse.ArgumentParser(description="KsponSpeech Preprocess")
-    parser.add_argument(
-        "--data_dir", type=str,
-    )
-    parser.add_argument(
-        "--save_dir", type=str
-    )
-    parser.add_argument(
-        "--output_unit", type=str, default="character"
-    )
-    parser.add_argument(
-        "--save_path", type=str
-    )
-    parser.add_argument(
-        "--preprocess_mode", type=str, default="phonetic"
-    )
-    parser.add_argument(
-        "--vocab_size", type=int, default=5000
-    )
+    parser.add_argument("--data_dir")
+    parser.add_argument("--save_dir")
+    parser.add_argument("--output_unit", default="character")
+    parser.add_argument("--save_path")
+    parser.add_argument("--preprocess_mode", default="phonetic")
+    parser.add_argument("--vocab_size", type=int, default=5000)
     return parser.parse_args()
 
 

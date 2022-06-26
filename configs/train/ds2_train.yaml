@@ -2,6 +2,7 @@
 dataset: "kspon"
 dataset_path: ""
 transcripts_path: "/Users/jongbeom.kim/Documents/ksponspeech/data/transcripts.txt"
+vocabs_csv_path: "/Users/jongbeom.kim/Documents/ksponspeech/data/vocabs.csv"
 output_unit: "character"
 
 # trainer

@@ -70,3 +70,9 @@ audio:
 [2022-06-25 15:38:18,598][kospeech.utils][INFO] - step:   20/7600, loss: 30.337509, cer: 15.35, elapsed: 2718.63s 82.33m 1.37h, lr: 0.000002
 [2022-06-25 16:26:20,603][kospeech.utils][INFO] - step:   30/7600, loss: 19.432398, cer: 11.58, elapsed: 2882.00s 130.36m 2.17h, lr: 0.000002
 [2022-06-25 17:09:10,162][kospeech.utils][INFO] - step:   40/7600, loss: 9.133060, cer: 9.01, elapsed: 2569.56s 173.19m 2.89h, lr: 0.000002
+[2022-06-25 18:01:18,740][kospeech.utils][INFO] - step:   50/7600, loss: 7.705094, cer: 7.30, elapsed: 3128.58s 225.33m 3.76h, lr: 0.000002
+[2022-06-25 18:35:37,998][kospeech.utils][INFO] - step:   60/7600, loss: 7.834096, cer: 6.27, elapsed: 2059.26s 259.65m 4.33h, lr: 0.000002
+[2022-06-25 19:12:56,204][kospeech.utils][INFO] - step:   70/7600, loss: 7.942432, cer: 5.53, elapsed: 2238.21s 296.95m 4.95h, lr: 0.000002
+[2022-06-25 19:52:39,563][kospeech.utils][INFO] - step:   80/7600, loss: 7.139938, cer: 4.97, elapsed: 2383.36s 336.68m 5.61h, lr: 0.000002
+[2022-06-25 20:32:16,532][kospeech.utils][INFO] - step:   90/7600, loss: 7.163606, cer: 4.56, elapsed: 2376.97s 376.29m 6.27h, lr: 0.000002
+[2022-06-25 21:11:34,292][kospeech.utils][INFO] - step:  100/7600, loss: 6.758273, cer: 4.23, elapsed: 2357.76s 415.59m 6.93h, lr: 0.000002
